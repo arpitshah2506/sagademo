@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Saga Trigger</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // 1️⃣ Setup WebSocket connection
+            const socket = new WebSocket("ws://localhost:8080/ws/saga");
+
+            socket.onopen = () => console.log("✅ WebSocket connected");
+            socket.onclose = () => console.log("❌ WebSocket disconnected");
+            socket.onerror = () => console.log("⚠️ WebSocket error");
+
+            socket.onmessage = function (event) {
+                alert("🎯 SAGA RESULT: " + event.data);
+            };
+
+            // 2️⃣ Handle POST buttons using fetch()
+            function triggerSaga(path) {
+                fetch(path, { method: "POST" })
+                    .then(response => response.text())
+                    .then(text => console.log("✅ Saga triggered:", text))
+                    .catch(err => console.error("❌ Trigger failed:", err));
+            }
+
+            // 3️⃣ Bind click listeners
+            document.getElementById("successBtn").addEventListener("click", function () {
+                triggerSaga("/saga/success");
+            });
+
+            document.getElementById("failureBtn").addEventListener("click", function () {
+                triggerSaga("/saga/failure");
+            });
+        });
+    </script>
+</head>
+<body>
+    <h2>Trigger Saga</h2>
+    <button id="successBtn">Trigger Success Saga</button>
+    <br/><br/>
+    <button id="failureBtn">Trigger Failure Saga</button>
+</body>
+</html>
