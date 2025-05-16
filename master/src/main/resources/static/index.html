@@ -5,7 +5,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // 1️⃣ Setup WebSocket connection
-            const socket = new WebSocket("ws://localhost:8080/ws/saga");
+            const socket = new WebSocket(`ws://${window.location.host}/ws/saga`);
 
             socket.onopen = () => console.log("✅ WebSocket connected");
             socket.onclose = () => console.log("❌ WebSocket disconnected");
